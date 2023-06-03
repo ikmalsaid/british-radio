@@ -21,9 +21,31 @@
 
     .container {
       display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding-bottom: 2%;
+    }
+
+    .controller {
+      display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
+    }
+
+    .radio-icon {
+      position: relative;
+      width: 240px;
+      height: 120px;
+      display: flex;
+      align-items:end;
+    }
+    
+    .radio-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border: 2px solid transparent;
     }
 
     select, button, input[type="range"] {
@@ -33,13 +55,16 @@
       padding: 8px;
       margin: 5px;
     }
-
+    select {
+      width: 236px;
+    }
     button {
       cursor: pointer;
+      width: 111px;
     }
 
     input[type="range"] {
-      width: 200px;
+      width: 222px;
     }
 
     .status-indicator-container {
@@ -76,22 +101,42 @@
           opacity: 0;
         }
     }
+
+    footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+    }
+
   </style>
 </head>
 <body>
   <h1>British Radio Client</h1>
 
   <div class="container">
+    <div class="radio-icon" data-station="BBC Radio 1">
+      <img src="https://ichef.bbci.co.uk/images/ic/320x180/p0cbj45j.jpg" alt="BBC Radio 1">
+    </div>
+    <div class="radio-icon" data-station="BBC Radio 2">
+      <img src="https://ichef.bbci.co.uk/images/ic/320x180/p0cbjbk8.jpg" alt="BBC Radio 2">
+    </div>
+    <div class="radio-icon" data-station="BBC Asian Network">
+      <img src="https://ichef.bbci.co.uk/images/ic/320x180/p0cbjcm1.jpg" alt="BBC Asian Network">
+    </div>
+  </div>
+
+  <div class="controller">
     <select id="radioStations">
       <option value="">Select a radio station</option>
       <option value="https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one">BBC Radio 1</option>
       <option value="https://stream.live.vc.bbcmedia.co.uk/bbc_radio_two">BBC Radio 2</option>
-      <option value="http://stream.live.vc.bbcmedia.co.uk/bbc_asian_network">BBC Asian Network</option>
+      <option value="https://stream.live.vc.bbcmedia.co.uk/bbc_asian_network">BBC Asian Network</option>
     </select>
     
     <div class="status-indicator-container">
       <div class="status-indicator"></div>
-      <span class="status-text">Radio paused</span>
+      <span class="status-text">Radio Stopped</span>
     </div>
     
     <div>
@@ -102,7 +147,69 @@
     <input id="volumeSlider" type="range" min="0" max="100" value="50">
     <span id="volumeText" class="status-text">Volume: 50%</span>
   </div>
-
-  <script src="script.js"></script>
+  <footer>
+    British Radio Client by Ikmal Said in June 2023
+  </footer>
+  <script>
+    window.onload = function() {
+      const radioStationsSelect = document.getElementById('radioStations');
+      const playButton = document.getElementById('playButton');
+      const pauseButton = document.getElementById('pauseButton');
+      const volumeSlider = document.getElementById('volumeSlider');
+      const statusIndicator = document.querySelector('.status-indicator');
+      const statusText = document.querySelector('.status-text');
+      const volumeText = document.getElementById('volumeText');
+      let audioPlayer = new Audio();
+    
+      // Enable/disable play/pause buttons based on radio station selection
+      radioStationsSelect.onchange = function() {
+        const selectedStation = radioStationsSelect.value;
+        playButton.disabled = !selectedStation;
+        pauseButton.disabled = !selectedStation;
+    
+        if (audioPlayer.src !== selectedStation) {
+          const isPlaying = !audioPlayer.paused;
+          
+          audioPlayer.pause();
+          audioPlayer.src = selectedStation;
+          
+          if (isPlaying) {
+            audioPlayer.play();
+          }
+        }
+      };
+    
+      // Play button event listener
+      playButton.onclick = function() {
+        audioPlayer.play();
+        statusIndicator.classList.add('playing');
+        statusIndicator.classList.remove('paused');
+        statusText.textContent = 'Now Playing...';
+      };
+    
+      // Pause button event listener
+      pauseButton.onclick = function() {
+        audioPlayer.pause();
+        statusIndicator.classList.remove('playing');
+        statusIndicator.classList.add('paused');
+        statusText.textContent = 'Radio paused';
+      };
+    
+      // Volume slider event listener
+      volumeSlider.oninput = function() {
+        const volumePercentage = volumeSlider.value;
+        audioPlayer.volume = volumePercentage / 100;
+        volumeText.textContent = `Volume: ${volumePercentage}%`;
+      };
+    
+      // Event listener to update status indicator when audio is ended
+      audioPlayer.addEventListener('ended', function() {
+        statusIndicator.classList.remove('playing');
+        statusIndicator.classList.remove('paused');
+        statusText.textContent = 'Radio paused';
+      });
+    };
+    
+  </script>
 </body>
 </html>
