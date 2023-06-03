@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>British Radio Client</title>
+  <style>
+    body {
+      background-color: #222;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      color: orange;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    select, button, input[type="range"] {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 8px;
+      margin: 5px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    input[type="range"] {
+      width: 200px;
+    }
+
+    .status-indicator-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: red;
+      visibility: visible;
+      animation: none;
+    }
+
+    .status-indicator.playing {
+      background-color: green;
+      animation: blinker 1s infinite;
+    }
+
+    .status-indicator.paused {
+      background-color: red;
+      animation: none;
+    }
+
+    .status-text {
+      font-size: 14px;
+    }
+
+    @keyframes blinker {
+        50% {
+          opacity: 0;
+        }
+    }
+  </style>
+</head>
+<body>
+  <h1>British Radio Client</h1>
+
+  <div class="container">
+    <select id="radioStations">
+      <option value="">Select a radio station</option>
+      <option value="https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one">BBC Radio 1</option>
+      <option value="https://stream.live.vc.bbcmedia.co.uk/bbc_radio_two">BBC Radio 2</option>
+      <option value="http://stream.live.vc.bbcmedia.co.uk/bbc_asian_network">BBC Asian Network</option>
+    </select>
+    
+    <div class="status-indicator-container">
+      <div class="status-indicator"></div>
+      <span class="status-text">Radio paused</span>
+    </div>
+    
+    <div>
+      <button id="playButton" disabled>Play</button>
+      <button id="pauseButton" disabled>Pause</button>
+    </div>
+    
+    <input id="volumeSlider" type="range" min="0" max="100" value="50">
+    <span id="volumeText" class="status-text">Volume: 50%</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
