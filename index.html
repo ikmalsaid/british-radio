@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>British Radio Client</title>
   <style>
     body {
@@ -17,56 +18,58 @@
     h1 {
       color: orange;
       margin-bottom: 20px;
+      text-align: center;
     }
 
     .container {
       display: flex;
+      flex-wrap: wrap;
+      align-items: center;
       justify-content: center;
       gap: 20px;
-      padding-bottom: 2%;
+      padding-bottom: 20px;
     }
 
     .controller {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
+      gap: 20px;
+      max-width: 300px;
+      padding-left: 5px;
     }
 
     .radio-icon {
       position: relative;
-      width: 240px;
+      width: 100%;
+      max-width: 240px;
       height: 120px;
-      display: flex;
-      align-items:end;
     }
-    
+
     .radio-icon img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       border: 2px solid transparent;
     }
-
     select, button, input[type="range"] {
       background-color: #333;
       color: #fff;
       border: none;
       padding: 8px;
       margin: 5px;
-    }
-    select {
-      width: 236px;
+      box-sizing: border-box;
     }
     button {
-      cursor: pointer;
-      width: 111px;
+      width: 113px;
     }
-
-    input[type="range"] {
-      width: 222px;
+    select {
+      width: 241px;
     }
-
+    input {
+      width: 240px;
+    }
     .status-indicator-container {
       display: flex;
       align-items: center;
@@ -109,6 +112,19 @@
       color: #888;
     }
 
+    @media only screen and (min-width: 768px) {
+      .container {
+        justify-content: flex-start;
+      }
+
+      .radio-icon {
+        width: auto;
+      }
+
+      .controller {
+        margin: 0;
+      }
+    }
   </style>
 </head>
 <body>
